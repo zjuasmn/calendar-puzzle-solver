@@ -130,7 +130,7 @@ export default class App extends React.PureComponent<{}> {
         <div>
           <a href="https://www.dragonfjord.com/product/a-puzzle-a-day/">原问题</a>
           <a href="https://github.com/zjuasmn/calendar-puzzle-solver" style={{ marginLeft: 16 }}>Github源码</a>
-          <a href="http://jandan.net" style={{ marginLeft: 16 }}>煎蛋</a>
+          <a href="https://jandan.net" style={{ marginLeft: 16 }}>煎蛋</a>
         </div>
         <div className="Container">
           <Calendar month={month} day={day} onChange={this.handleChange} />
