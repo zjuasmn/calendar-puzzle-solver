@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .App {
   text-align: center;
 }
@@ -6,7 +10,7 @@
   width: 350px;
   height: 350px;
   position: relative;
-  margin: 20px auto;
+  margin: 10px auto;
 }
 
 
@@ -83,4 +87,30 @@
 .SolutionItem.selected {
   border: 2px solid blue;
   box-sizing: border-box;
+}
+
+.TypeSwitch {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px auto 0;
+  width: auto;
+}
+
+.TypeSwitchItem {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 8px 16px;
+  background: #f0f0f0;
+  cursor: pointer;
+  color: #333;
+}
+
+.TypeSwitchItem:hover {
+  background: #ddd;
+}
+
+.TypeSwitchItem.selected {
+  background: #07f;
+  color: #fff;
 }

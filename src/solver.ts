@@ -1,17 +1,30 @@
 import { uniqBy } from 'lodash'
 
 // 7 x 7
-export const puzzle = [
-  '......x',
-  '......x',
-  '.......',
-  '.......',
-  '.......',
-  '.......',
-  '...xxxx',
-]
-export const ROWS = puzzle.length
-export const COLS = puzzle[0].length
+export const puzzleByType = {
+  LEFT:
+    [
+      '......x',
+      '......x',
+      '.......',
+      '.......',
+      '.......',
+      '.......',
+      '...xxxx',
+    ],
+  CENTER: [
+    'x.....x',
+    '.......',
+    '.......',
+    '.......',
+    '.......',
+    '.......',
+    '...xxxx',
+  ],
+}
+
+export const ROWS = 7
+export const COLS = 7
 
 // 8
 const items = [
