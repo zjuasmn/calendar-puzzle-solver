@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { flatten, range } from 'lodash'
-import { COLS, firstXCols, itemMasks, puzzleByType, ROWS, solve } from './solver'
+import { COLS, firstXCols, itemDirections, items, puzzleByType, solve } from './solver'
 
 type puzzleType =
   | 'LEFT'
@@ -101,35 +101,49 @@ class SolutionView extends React.PureComponent<{
 
   render() {
     const { solution } = this.props
-    const board = range(ROWS).map(() => range(COLS).map(() => -1))
-
-    itemMasks.forEach((masks, i) => {
-      const { index, j } = solution[i]
-      const row = Math.floor(index / COLS)
-      const col = index % COLS
-      const mask = masks[j]
-      const n = mask.length
-      const m = mask[0].length
-      const firstXCol = firstXCols[i][j]
-
-      for (let r = 0; r < n; ++r) {
-        for (let c = 0; c < m; ++c) {
-          if (mask[r][c] === 'x') {
-            board[row + r][col + c - firstXCol] = i
-          }
-        }
-      }
-    })
 
     return (
       <div className="SolutionView">
-        {flatten(range(ROWS).map(row => range(COLS).map(col => (
-          <div key={`${row}_${col}`} className="item" style={
-            board[row][col] >= 0
-              ? { backgroundColor: this.colors[board[row][col]] }
-              : { backgroundColor: 'transparent' }
-          } />
-        ))))}
+        {items.map((item, i) => {
+          const { index, j } = solution[i]
+          const row = Math.floor(index / COLS)
+          const col = index % COLS
+          const firstXCol = firstXCols[i][j]
+          const direction = itemDirections[i][j]
+
+          const hwDiff = item.length - item[0].length
+          const needDiff = (direction === 1 || direction === 3 || direction === 4 || direction === 6)
+          return (
+            <div
+              key={i}
+              className="SolutionViewItem"
+              style={{
+                top: row * 50,
+                left: (col - firstXCol) * 50,
+                width: item[0].length * 50,
+                height: item.length * 50,
+                transform: [
+                  `translate3d(${needDiff ? hwDiff * 25 : 0}px, ${needDiff ? hwDiff * -25 : 0}px, 0px)`,
+                  `rotate3d(1, 1, 0, ${Math.floor(direction / 4) * 180}deg)`,
+                  `rotate3d(0, 0, 1, -${direction % 4 * 90}deg)`,
+                ].join(' '),
+              }}
+              data-direction={direction}
+            >
+              {flatten(
+                item.map((s, r) => s.split('').map(
+                  (_1, c) => (
+                    <div
+                      key={`${r}_${c}`}
+                      className="SolutionViewCell"
+                      style={item[r][c] === 'x' ? { backgroundColor: this.colors[i] } : {}}
+                    />
+                  )),
+                ),
+              )}
+            </div>
+          )
+        })}
       </div>
     )
   }
@@ -213,10 +227,13 @@ export default class App extends React.PureComponent<{}, AppState> {
           <a href="https://github.com/zjuasmn/calendar-puzzle-solver" style={{ marginLeft: 16 }}>Github源码</a>
           <a href="https://jandan.net" style={{ marginLeft: 16 }}>煎蛋</a>
         </div>
-        <TypeSwitch value={type} onChange={this.handleTypeChange} />
+        {/*<TypeSwitch value={type} onChange={this.handleTypeChange} />*/}
         <div className="Container">
           <Calendar type={type} month={month} day={day} onChange={this.handleChange} />
           {solutions[index] && <SolutionView solution={solutions[index]} />}
+        </div>
+        <div style={{ color: '#333' }}>
+          {`当前展示${month + 1}月${day}日解法${index + 1}(共${solutions.length}种)`}
         </div>
         {solutions.length > 0
           ? (
@@ -230,7 +247,7 @@ export default class App extends React.PureComponent<{}, AppState> {
                     window.scrollTo({ top: 0 })
                   }}
                 >
-                  {`解法${i}`}
+                  {`解法${i + 1}`}
                 </div>
               ))}
             </div>

@@ -34,6 +34,18 @@ html {
   flex-wrap: wrap;
 }
 
+.SolutionViewItem {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  transition: all ease 1000ms;
+}
+
+.SolutionViewCell {
+  width: 50px;
+  height: 50px;
+}
+
 .item {
   font-size: 1rem;
   color: #666;
@@ -77,16 +89,20 @@ html {
   padding: 8px 16px;
   border-radius: 8px;
   margin: 4px;
-  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   background: #f0f0f0;
   color: #333;
   cursor: pointer;
-  border: 2px solid transparent;
+}
+
+.SolutionItem:hover {
+  background: #ddd;
 }
 
 .SolutionItem.selected {
-  border: 2px solid blue;
-  box-sizing: border-box;
+  background: #07f;
+  color: #fff;
 }
 
 .TypeSwitch {

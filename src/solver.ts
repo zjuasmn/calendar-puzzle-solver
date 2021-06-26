@@ -27,7 +27,7 @@ export const ROWS = 7
 export const COLS = 7
 
 // 8
-const items = [
+export const items = [
   [
     'x...',
     'xxxx',
@@ -104,6 +104,27 @@ export const itemMasks = items.map(item => {
   }
   return uniqBy(ret, x => x.join('\n'))
 })
+
+// 8 * ?
+export const itemDirections = items.map((item, i) => {
+  const masks = [
+    item,
+  ]
+  // rotate
+  for (let i = 1; i < 4; ++i) {
+    masks.push(rotate(masks[i - 1]))
+  }
+  for (let i = 4; i < 8; ++i) {
+    masks.push(flip(masks[i - 4]))
+  }
+  const originMaskString = masks.map(mask => mask.join('\n'))
+  const itemMaskStrings = itemMasks[i].map(mask => mask.join('\n'))
+  return itemMaskStrings.map(itemMaskString => originMaskString.indexOf(itemMaskString))
+})
+
+console.log(itemMasks)
+console.log(itemDirections)
+
 // 8 * ?
 export const firstXCols = itemMasks.map(masks => masks.map(mask => mask[0].indexOf('x')))
 
